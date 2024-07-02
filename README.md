@@ -38,4 +38,5 @@ rm ../config_data/test*.json
 1. Setup the environment from the root directory
 ```bash
 source webarena/.venv/bin/activate
+python -m scripts.evaluate.debug_webarena
 ```
