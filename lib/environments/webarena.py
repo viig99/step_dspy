@@ -1,8 +1,3 @@
-import os
-
-os.environ["MAP"] = "http://ec2-3-131-244-37.us-east-2.compute.amazonaws.com:3000"
-
-
 import json
 
 # Init an environment
@@ -97,9 +92,6 @@ class WebArenaEnvironmentWrapper:
         print(f"[Step {self.steps}] {action}")
 
         self.webarena_env.page.screenshot(path=f"Step {self.steps - 1}.png")
-
-        if self.steps == 4:
-            action = "page.locator('xpath=//*[@id=\"sidebar\"]/div[1]/form[2]/div[2]/div[2]/select').click()"
 
         if self.steps > self.max_steps:
             print(f"Steps {self.steps} exceeded maximum {self.max_steps}")

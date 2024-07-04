@@ -26,10 +26,11 @@ def run():
     env = WebArenaEnvironmentWrapper(
         config_file=config_file,
         max_steps=50,
+        max_browser_rows=500,
         slow_mo=0,
         observation_type="accessibility_tree",
-        current_viewport_only=True,
-        viewport_size={"width": 1920, "height": 1080},
+        current_viewport_only=False,
+        viewport_size={"width": 1280, "height": 720},
         headless=False,
     )
 

@@ -49,7 +49,7 @@ class PredictNextAction(dspy.Signature):
     next_action = dspy.OutputField(
         title="Next Action",
         description=f"""The next action to be performed by the web agent to accomplish the objective.
-        The action can be one of the following:
+        The action can be only one of the following:
         {get_action_description(AllActions)}
         """,
     )
@@ -68,7 +68,7 @@ class MapAction(PredictNextAction):
     next_action = dspy.OutputField(
         title="Next Action",
         description=f"""The next action to be performed by the web agent to accomplish the objective.
-        The action can be one of the following:
+        The action can be only one of the following:
         {get_action_description(MapActions)}
         """,
     )
