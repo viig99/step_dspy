@@ -27,28 +27,27 @@ def get_action_description(action_literal) -> str:
 
 
 class PredictNextAction(dspy.Signature):
-    f"""Predict the next action to be performed by the web agent performing tasks on a web browser.
-    """
+    """Predict the next action to be performed by the web agent performing tasks on a web browser."""
 
     objective: str = dspy.InputField(
         title="Objective",
-        description="The objective of the task that the web agent is trying to accomplish.",
+        desc="The objective of the task that the web agent is trying to accomplish.",
     )
     observation: str = dspy.InputField(
         title="Observation",
-        description="A simplified text description of the current browser content, without formatting elements.",
+        desc="A simplified text description of the current browser content, without formatting elements.",
     )
     url: str = dspy.InputField(
         title="URL",
-        description="The URL of the current webpage.",
+        desc="The URL of the current webpage.",
     )
     previous_actions: list[PreviousActionAndState] = dspy.InputField(
         title="Previous Actions",
-        description="A list of your past actions with an optional reponse.",
+        desc="A list of your past actions with an optional reponse.",
     )
     next_action = dspy.OutputField(
         title="Next Action",
-        description=f"""The next action to be performed by the web agent to accomplish the objective.
+        desc=f"""The next action to be performed by the web agent to accomplish the objective.
         The action can be only one of the following:
         {get_action_description(AllActions)}
         """,
@@ -56,18 +55,19 @@ class PredictNextAction(dspy.Signature):
 
 
 class MapAction(PredictNextAction):
-    f"""Predict the next action to be performed by the web agent performing tasks on a web browser.
+    """Predict the next action to be performed by the web agent performing tasks on a web browser.
     1. If the OBJECTIVE is about finding directions from A to B, you MUST use find_directions [] subroutine.
         e.g. find_directions [Check if the social security administration in pittsburgh can be reached in one hour by car from Carnegie Mellon University]
     2. If the OBJECTIVE is about searching nearest place to a location, you MUST use search_nearest_place [] subroutine.
         e.g. search_nearest_place [Tell me the closest restaurant(s) to Cohon University Center at Carnegie Mellon University]
     3. If the OBJECTIVE is to pull up a description, once that place appears in the sidepane, return stop [N/A]
     4. Return only one action at a time, e.g. click [7]
-    5. Return exactly as specified in the examples format. 
+    5. Return exactly as specified in the examples format.
     """
+
     next_action = dspy.OutputField(
         title="Next Action",
-        description=f"""The next action to be performed by the web agent to accomplish the objective.
+        desc=f"""The next action to be performed by the web agent to accomplish the objective.
         The action can be only one of the following:
         {get_action_description(MapActions)}
         """,
@@ -75,16 +75,17 @@ class MapAction(PredictNextAction):
 
 
 class FindDirectionAction(PredictNextAction):
-    f"""Predict the next action to be performed by the web agent performing tasks on a web browser.
+    """Predict the next action to be performed by the web agent performing tasks on a web browser.
     Please follow these instructions to solve the subtask:
     1. First click on "Find directions between two points", then enter From and To Fields, and click search.
     2. If you have to find directions to social security administration in Pittsburgh, search for it in a structured format like Social Security Administration, Pittsburgh.
     3. Return only one action at a time, e.g. click [7]
     4. Return exactly as specified in the examples format.
     """
+
     next_action = dspy.OutputField(
         title="Next Action",
-        description=f"""The next action to be performed by the web agent to accomplish the objective.
+        desc=f"""The next action to be performed by the web agent to accomplish the objective.
         The action can be one of the following:
         {get_action_description(FindDirectionActions)}
         """,
@@ -92,7 +93,7 @@ class FindDirectionAction(PredictNextAction):
 
 
 class SearchNearestPlaceAction(PredictNextAction):
-    f"""Predict the next action to be performed by the web agent performing tasks on a web browser.
+    """Predict the next action to be performed by the web agent performing tasks on a web browser.
     Please follow these instructions to solve the subtask:
     1. For searches that refer to CMU, e.g.  "find cafes near CMU Hunt Library"
         a. You have to first center your map around a location. If you have to find cafes near CMU Hunt Library, the first step is to make sure the map is centered around Carnegie Mellon University. To do that, first search for Carnegie Mellon University and then click [] on a list of location that appears. You MUST click on the Carnegie Mellon University location to center the map. Else the map will not centered. E.g click [646]
@@ -101,15 +102,16 @@ class SearchNearestPlaceAction(PredictNextAction):
     2. For searches that don't refer to CMU
         a. No need to center the map. Directly search what is specified in OBJECTIVE, e.g. "bars near Carnegie Music Hall"
         b. When your search returns a list of elements, return them in a structured format like stop [A, B, C]
-    3. Be sure to double check whether the OBJECTIVE has CMU or not and then choose between instruction 1 and 2. 
-    4. Remember that the word CMU cannot be typed in the search bar as it cannot be parsed by maps. 
+    3. Be sure to double check whether the OBJECTIVE has CMU or not and then choose between instruction 1 and 2.
+    4. Remember that the word CMU cannot be typed in the search bar as it cannot be parsed by maps.
     5. Remember that if you want to center your map around Carnegie Mellon University, you have to click on it after you search for it. Check your PREVIOUS ACTIONS to confirm you have done so, e.g. click [646] should be in the previous actions.
     6. Return only one action at a time, e.g. click [7]
     7. Return exactly as specified in the examples format.
     """
+
     next_action = dspy.OutputField(
         title="Next Action",
-        description=f"""The next action to be performed by the web agent to accomplish the objective.
+        desc=f"""The next action to be performed by the web agent to accomplish the objective.
         The action can be one of the following:
         {get_action_description(SearchNearestPlaceActions)}
         """,
@@ -119,7 +121,7 @@ class SearchNearestPlaceAction(PredictNextAction):
 class MapPlanningModule(dspy.Module):
     def __init__(self):
         super().__init__()
-        self.prog = dspy.TypedChainOfThought(signature=MapAction, max_retries=5)
+        self.prog = dspy.TypedPredictor(signature=MapAction, max_retries=5)
 
     def forward(
         self,
@@ -139,14 +141,12 @@ class MapPlanningModule(dspy.Module):
 class FindDirectionModule(MapPlanningModule):
     def __init__(self):
         super().__init__()
-        self.prog = dspy.TypedChainOfThought(
-            signature=FindDirectionAction, max_retries=5
-        )
+        self.prog = dspy.TypedPredictor(signature=FindDirectionAction, max_retries=5)
 
 
 class SearchNearestPlaceModule(MapPlanningModule):
     def __init__(self):
         super().__init__()
-        self.prog = dspy.TypedChainOfThought(
+        self.prog = dspy.TypedPredictor(
             signature=SearchNearestPlaceAction, max_retries=5
         )

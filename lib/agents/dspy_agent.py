@@ -61,10 +61,11 @@ class PromptAgent(Agent):
             previous_actions=self.previous_history(),
         )
 
-        self.turbo.inspect_history(0)
+        self.turbo.inspect_history(1)
 
         action = dspy_response.next_action
-        reason = dspy_response.reasoning
+        # reason = dspy_response.reasoning
+        reason = "None"
 
         if self.verbose > 0:
             if self.verbose > 1:
@@ -72,7 +73,7 @@ class PromptAgent(Agent):
             print(f"\n OBJECTIVE: {objective}")
             print(f"\n URL: {url}")
             print(f"\n PREVIOUS HISTORY: {self.previous_history()}")
-            print(f"\n REASON: {reason}")
+            # print(f"\n REASON: {reason}")
             print(f"\n ACTION: {action}")
 
         if self.debug:
