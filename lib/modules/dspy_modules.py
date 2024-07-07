@@ -48,9 +48,8 @@ class PredictNextAction(dspy.Signature):
     next_action = dspy.OutputField(
         title="Next Action",
         desc=f"""The next action to be performed by the web agent to accomplish the objective.
-        The action can be only one of the following:
-        {get_action_description(AllActions)}
-        """,
+The action can be only one of the following:
+{get_action_description(AllActions)}""",
     )
 
 
@@ -68,9 +67,8 @@ class MapAction(PredictNextAction):
     next_action = dspy.OutputField(
         title="Next Action",
         desc=f"""The next action to be performed by the web agent to accomplish the objective.
-        The action can be only one of the following:
-        {get_action_description(MapActions)}
-        """,
+The action can be only one of the following:
+{get_action_description(MapActions)}""",
     )
 
 
@@ -86,9 +84,8 @@ class FindDirectionAction(PredictNextAction):
     next_action = dspy.OutputField(
         title="Next Action",
         desc=f"""The next action to be performed by the web agent to accomplish the objective.
-        The action can be one of the following:
-        {get_action_description(FindDirectionActions)}
-        """,
+The action can be one of the following:
+{get_action_description(FindDirectionActions)}""",
     )
 
 
@@ -112,9 +109,8 @@ class SearchNearestPlaceAction(PredictNextAction):
     next_action = dspy.OutputField(
         title="Next Action",
         desc=f"""The next action to be performed by the web agent to accomplish the objective.
-        The action can be one of the following:
-        {get_action_description(SearchNearestPlaceActions)}
-        """,
+The action can be one of the following:
+{get_action_description(SearchNearestPlaceActions)}""",
     )
 
 
