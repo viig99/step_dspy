@@ -154,7 +154,7 @@ class WebArenaEnvironmentWrapper:
             if match:
                 option = match.group(2)
                 output_string = (
-                    f"page.get_by_role('combobox').select_option('{option}')"
+                    f'page.get_by_role("combobox").select_option("{option}")'
                 )
                 return create_playwright_action(output_string)
             else:
