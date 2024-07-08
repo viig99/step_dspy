@@ -1,4 +1,5 @@
 import json
+import re
 
 # Init an environment
 from browser_env import (
@@ -148,6 +149,15 @@ class WebArenaEnvironmentWrapper:
 
     def call_right_action(self, action_str):
         if "select" in action_str:
-            return create_playwright_action(action_str)
+            pattern = r"select \[(\d+)\] \[(.+)\]"
+            match = re.search(pattern, action_str)
+            if match:
+                option = match.group(2)
+                output_string = (
+                    f"page.get_by_role('combobox').select_option('{option}')"
+                )
+                return create_playwright_action(output_string)
+            else:
+                return create_id_based_action(action_str)
         else:
             return create_id_based_action(action_str)
