@@ -1,0 +1,3 @@
+[submodule "webarena"]
+	path = webarena
+	url = git@github.com:viig99/webarena.git
