@@ -1,6 +1,7 @@
 ## Agents on DSpy
-Building an agent using DSPy that can interact with the webarena environment. We are looking to achieve SOTA performance on webarena benchmarking,
-by implementing various ideas like:
+Building an agent using DSPy that can interact with the [webarena](https://webarena.dev/) environment. 
+
+We are looking to achieve SOTA performance on [webarena benchmark](https://docs.google.com/spreadsheets/d/1M801lEpBbKSNwP-vDBkC_pF7LdyGU1f_ufZb_NWNBZQ/edit?usp=sharing), by implementing various ideas like:
 * [SteP: Stacked LLM Policies for Web Actions](https://arxiv.org/pdf/2310.03720)
 * [Tree Search For Language Model Agents](https://jykoh.com/search-agents/paper.pdf)
 
