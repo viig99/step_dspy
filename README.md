@@ -40,7 +40,10 @@ python browser_env/auto_login.py
 4. Copy the map configs to config_data folder
 ```bash
 python scripts/generate_test_data.py
-grep -ol "\"map\"" config_files/*.json | xargs cp -t ../config_data/
+For Fedora:
+  grep -ol "\"map\"" config_files/*.json | xargs cp -t ../config_data/
+For Mac:
+  grep -ol "\"map\"" config_files/*.json | xargs -I {} cp {} ../config_data/
 rm ../config_data/test*.json
 ```
 
