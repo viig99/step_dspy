@@ -26,7 +26,7 @@ class PromptAgent(Agent):
         )
         self.debug = debug
         self.turbo = dspy.OpenAI(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             model_type="chat",
             temperature=1.0,
         )

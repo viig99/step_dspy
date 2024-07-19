@@ -92,7 +92,7 @@ class WebArenaEnvironmentWrapper:
         self.steps = self.steps + 1
         print(f"[Step {self.steps}] {action}")
 
-        self.webarena_env.page.screenshot(path=f"Step {self.steps - 1}.png")
+        # self.webarena_env.page.screenshot(path=f"Step {self.steps - 1}.png")
 
         if self.steps > self.max_steps:
             print(f"Steps {self.steps} exceeded maximum {self.max_steps}")
@@ -119,7 +119,7 @@ class WebArenaEnvironmentWrapper:
             except Exception as e:
                 print(f"Error occurred while taking step: {e}")
 
-        self.webarena_env.page.screenshot(path=f"Step {self.steps}.png")
+        # self.webarena_env.page.screenshot(path=f"Step {self.steps}.png")
 
         return self.status()
 
