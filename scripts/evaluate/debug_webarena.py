@@ -19,9 +19,9 @@ def run():
     # Evaluate
     #####
 
-    config_file = "config_data/366.json"
+    config_file = "config_data/35.json"
 
-    # config_file = "config_data/379.json"
+    # config_file = "config_data/7.json"
 
     env = WebArenaEnvironmentWrapper(
         config_file=config_file,

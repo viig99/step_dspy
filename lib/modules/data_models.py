@@ -1,5 +1,6 @@
 from enum import StrEnum
 from typing import Literal
+import re
 
 
 class Action(StrEnum):
@@ -17,6 +18,53 @@ class Action(StrEnum):
     GO_FORWARD = "go_forward"
     STOP = "stop [answer]"
 
+'''
+1. This function takes one arguments: Action value and returns the regex corresponding to the string e.g.
+The regex corresponding to CLICK value "click [id]" is click \[(\d+)\]
+'''
+def get_regex_str(action: Action) -> str:
+    if action == Action.CLICK:
+        return r"click \[(\d+)\]"
+    elif action == Action.TYPE:
+        return r"type \[(\d+)\] \[(.*?)\] \[(\d+)\]"
+    elif action == Action.HOVER:
+        return r"hover \[(\d+)\]"
+    elif action == Action.PRESS:
+        return r"press \[(.*?)\]"
+    elif action == Action.SCROLL:
+        return r"scroll \[(down|up)\]"
+    elif action == Action.SELECT:
+        return r"select \[(\d+)\] \[(.*?)\]"
+    elif action == Action.NEW_TAB:
+        return r"new_tab"
+    elif action == Action.TAB_FOCUS:
+        return r"tab_focus \[(\d+)\]"
+    elif action == Action.CLOSE_TAB:
+        return r"close_tab"
+    elif action == Action.GOTO:
+        return r"goto \[(.*?)\]"
+    elif action == Action.GO_BACK:
+        return r"go_back"
+    elif action == Action.GO_FORWARD:
+        return r"go_forward"
+    elif action == Action.STOP:
+        return r"stop \[(.*?)\]"
+    else:
+        raise ValueError("Invalid action")
+
+'''
+This function takes a string as an argument and returns a value of type string.
+The way it does is iterates through all the Action values, calls get_regex_str function for the value and then does a regex match.
+when there is first value that has a regex match with the string, the matched string is returned.
+'''
+def parse_action(action_str: str) -> str:
+    for action in Action:
+        regex_pattern = get_regex_str(action)
+        regex = re.compile(regex_pattern)
+        match = regex.search(action_str)
+        if match:
+            return match.group(0)
+    raise ValueError("Invalid action string")
 
 class ModuleAction(StrEnum):
     FIND_DIRECTIONS = "find_directions [query]"
